@@ -9,10 +9,10 @@ namespace StudentEfCoreDemo.Application.Interfaces
 {
     public interface ITeamsRepository
     {
-        Task<IEnumerable<Student>> GetAllAsync();
-        Task<Student?> GetByIdAsync(int id);
-        Task<Student> AddAsync(Student student);
-        Task UpdateAsync(Student student);
+        Task<IEnumerable<Team>> GetAllAsync();
+        Task<Team?> GetByIdAsync(int id);
+        Task<Team> AddAsync(Team team);
+        Task UpdateAsync(Team team);
         Task DeleteAsync(int id);
         Task<bool> ExistsAsync(int id);
     }

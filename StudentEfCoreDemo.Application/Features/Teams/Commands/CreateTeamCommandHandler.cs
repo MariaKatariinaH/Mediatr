@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using StudentEfCoreDemo.Application.DTOs;
-using StudentEfCoreDemo.Application.Features.Students.Commands;
+using StudentEfCoreDemo.Application.Features.Teams.Commands;
 using StudentEfCoreDemo.Application.Interfaces;
 using StudentEfCoreDemo.Domain.Entities;
 using System;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace StudentEfCoreDemo.Application.Features.Teams.Commands
 {
-    public class CreateTeamCommandHandler : IRequestHandler<CreateStudentCommand, StudentDto>
+    public class CreateTeamCommandHandler : IRequestHandler<CreateTeamCommand, TeamDto>
     {
         private readonly ITeamsRepository _repository;
 
@@ -20,24 +20,25 @@ namespace StudentEfCoreDemo.Application.Features.Teams.Commands
             _repository = repository;
         }
 
-        public async Task<StudentDto> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
+        public async Task<TeamDto> Handle(CreateTeamCommand request, CancellationToken cancellationToken)
         {
-            var student = new Student
+            var team = new Team
             {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Age = request.Age
+                Name = request.Name,
+                FoundedDate = request.FoundedDate,
+                HomeStadium = request.HomeStadium,
+                MaxRosterSize = request.MaxRosterSize
             };
 
-            var createdStudent = await _repository.AddAsync(student);
-            return new StudentDto
+            var createdTeam = await _repository.AddAsync(team);
+            return new TeamDto
             {
-                Id = createdStudent.Id,
-                FirstName = createdStudent.FirstName,
-                LastName = createdStudent.LastName,
-                Age = createdStudent.Age
+                Id = createdTeam.Id,
+                Name = createdTeam.Name,
+                FoundedDate = createdTeam.FoundedDate,
+                HomeStadium = createdTeam.HomeStadium,
+                MaxRosterSize = createdTeam.MaxRosterSize
             };
         }
     }
-}
 }

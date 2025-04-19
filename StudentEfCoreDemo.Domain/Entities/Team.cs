@@ -4,8 +4,10 @@ namespace StudentEfCoreDemo.Domain.Entities
 {
     public class Team
     {
+       
         private string _name;
         private string _sportType;
+        private DateTime _foundedDate;
         private string _homeStadium;
         private int _maxRosterSize;
 
@@ -53,9 +55,6 @@ namespace StudentEfCoreDemo.Domain.Entities
                 _homeStadium = value;
             }
         }
-
-
-
         public int MaxRosterSize
         {
             get => _maxRosterSize;
