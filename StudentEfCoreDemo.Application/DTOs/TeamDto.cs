@@ -10,6 +10,7 @@ namespace StudentEfCoreDemo.Application.DTOs
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
+        public string SportType { get; set; } = string.Empty;
         public DateTime FoundedDate { get; set; }
         public string HomeStadium { get; set; } = string.Empty;
         public int MaxRosterSize { get; set; }

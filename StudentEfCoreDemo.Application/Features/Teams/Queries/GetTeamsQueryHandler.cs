@@ -24,6 +24,7 @@ namespace StudentEfCoreDemo.Application.Features.Teams.Queries
             {
                 Id = s.Id,
                 Name = s.Name,
+                SportType = s.SportType,
                 FoundedDate = s.FoundedDate,
                 HomeStadium = s.HomeStadium,
                 MaxRosterSize = s.MaxRosterSize,

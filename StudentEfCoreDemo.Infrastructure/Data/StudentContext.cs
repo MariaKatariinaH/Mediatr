@@ -8,5 +8,6 @@ namespace StudentEfCoreDemo.Infrastructure.Data
         public StudentContext(DbContextOptions<StudentContext> options) : base(options) { }
 
         public DbSet<Student> Students { get; set; } = null!;
+        public DbSet<Team> Teams { get; set; } = null!;
     }
 } 

@@ -25,6 +25,7 @@ namespace StudentEfCoreDemo.Application.Features.Teams.Commands
             var team = new Team
             {
                 Name = request.Name,
+                SportType = request.SportType,
                 FoundedDate = request.FoundedDate,
                 HomeStadium = request.HomeStadium,
                 MaxRosterSize = request.MaxRosterSize
@@ -35,6 +36,7 @@ namespace StudentEfCoreDemo.Application.Features.Teams.Commands
             {
                 Id = createdTeam.Id,
                 Name = createdTeam.Name,
+                SportType = createdTeam.SportType,
                 FoundedDate = createdTeam.FoundedDate,
                 HomeStadium = createdTeam.HomeStadium,
                 MaxRosterSize = createdTeam.MaxRosterSize

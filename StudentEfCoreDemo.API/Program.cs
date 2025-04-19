@@ -20,6 +20,7 @@ builder.Services.AddDbContext<StudentContext>(options => options.UseSqlServer(co
 
 // Add Repositories
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<ITeamsRepository, TeamRepository>();
 
 var app = builder.Build();
 

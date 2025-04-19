@@ -22,6 +22,7 @@ namespace StudentEfCoreDemo.Application.Features.Teams.Commands
             {
                 Id = request.Id,
                 Name = request.Name,
+                SportType = request.SportType,
                 FoundedDate = request.FoundedDate,
                 HomeStadium = request.HomeStadium,
                 MaxRosterSize = request.MaxRosterSize,
