@@ -241,17 +241,17 @@ The Application layer is where most of the implementation work happens. Follow t
       }
     }
 
-    namespace StudentEfCoreDemo.Application.Features.Teams.Commands
-    {
-      public class UpdateTeamCommandHandler : IRequestHandler<UpdateTeamCommand>
-      {
+   namespace StudentEfCoreDemo.Application.Features.Teams.Commands
+   {
+     public class UpdateTeamCommandHandler : IRequestHandler<UpdateTeamCommand>
+     {
         private readonly ITeamsRepository _repository;
         public UpdateTeamCommandHandler(ITeamsRepository repository)
         {
           _repository = repository;
         }
         public async Task Handle(UpdateTeamCommand request, CancellationToken cancellationToken)
-        {
+       {
           var team = new Team
             {
               Id = request.Id,
@@ -265,9 +265,9 @@ The Application layer is where most of the implementation work happens. Follow t
        	}
       }
     }
-
-   namespace StudentEfCoreDemo.Application.Features.Teams.Queries
-   {
+  ```csharp
+  namespace StudentEfCoreDemo.Application.Features.Teams.Queries
+  {
     public class GetTeamByIdQueryHandler : IRequestHandler<GetTeamByIdQuery, TeamDto?>
     {
       private readonly ITeamsRepository _repository;
@@ -294,33 +294,33 @@ The Application layer is where most of the implementation work happens. Follow t
      		};
      	}
     }
-   }
+  }
 
-    namespace StudentEfCoreDemo.Application.Features.Teams.Queries
+  namespace StudentEfCoreDemo.Application.Features.Teams.Queries
+  {
+    public class GetTeamsQueryHandler : IRequestHandler<GetTeamsQuery, List<TeamDto>>
     {
-     public class GetTeamsQueryHandler : IRequestHandler<GetTeamsQuery, List<TeamDto>>
-     {
-       private readonly ITeamsRepository _repository;
-       public GetTeamsQueryHandler(ITeamsRepository repository)
-       {
-         _repository = repository;
-       }
-       public async Task<List<TeamDto>> Handle(GetTeamsQuery request, CancellationToken cancellationToken)
-       {
-         var teams = await _repository.GetAllAsync();
-         return teams.Select(s => new TeamDto
-         {
-           Id = s.Id,
-           Name = s.Name,
-           SportType = s.SportType,
-           FoundedDate = s.FoundedDate,
-           HomeStadium = s.HomeStadium,
-           MaxRosterSize = s.MaxRosterSize,
+      private readonly ITeamsRepository _repository;
+      public GetTeamsQueryHandler(ITeamsRepository repository)
+      {
+        _repository = repository;
+      }
+      public async Task<List<TeamDto>> Handle(GetTeamsQuery request, CancellationToken cancellationToken)
+      {
+        var teams = await _repository.GetAllAsync();
+        return teams.Select(s => new TeamDto
+        {
+          Id = s.Id,
+          Name = s.Name,
+          SportType = s.SportType,
+          FoundedDate = s.FoundedDate,
+          HomeStadium = s.HomeStadium,
+          MaxRosterSize = s.MaxRosterSize,
          }).ToList();
        }
      }
-    }
-    ```
+  }
+  ```
 
 ### 3. Infrastructure Layer (StudentEfCoreDemo.Infrastructure)
 
