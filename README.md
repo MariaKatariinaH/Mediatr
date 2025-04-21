@@ -320,7 +320,7 @@ The Application layer is where most of the implementation work happens. Follow t
        }
      }
   }
-    ```
+  
 
 ### 3. Infrastructure Layer (StudentEfCoreDemo.Infrastructure)
 
