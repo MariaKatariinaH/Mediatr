@@ -97,37 +97,41 @@ The Application layer is where most of the implementation work happens. Follow t
 
     - Create a new DTO class in `Application/DTOs/`
 
-     ```csharp
-      namespace StudentEfCoreDemo.Application.DTOs
-      {
-        public class TeamDto
-        {
-          public int Id { get; set; }
-          public string Name { get; set; } = string.Empty;
-          public string SportType { get; set; } = string.Empty;
-          public DateTime FoundedDate { get; set; }
-          public string HomeStadium { get; set; } = string.Empty;
-          public int MaxRosterSize { get; set; }
-        }
-      }
+    ```csharp
+     namespace StudentEfCoreDemo.Application.DTOs
+     {
+       public class TeamDto
+       {
+         public int Id { get; set; }
+         public string Name { get; set; } = string.Empty;
+         public string SportType { get; set; } = string.Empty;
+         public DateTime FoundedDate { get; set; }
+         public string HomeStadium { get; set; } = string.Empty;
+         public int MaxRosterSize { get; set; }
+       }
+     }
+
+    ```
 
 2.  **Define Repository Interface**
 
     - Create a new interface in `Application/Interfaces/`
 
-     ```csharp
-      namespace StudentEfCoreDemo.Application.Interfaces
-      {
-        public interface ITeamsRepository
-        {
-          Task<IEnumerable<Team>> GetAllAsync();
-          Task<Team?> GetByIdAsync(int id);
-          Task<Team> AddAsync(Team team);
-          Task UpdateAsync(Team team);
-          Task DeleteAsync(int id);
-          Task<bool> ExistsAsync(int id);
-        }
-      }
+    ```csharp
+     namespace StudentEfCoreDemo.Application.Interfaces
+     {
+       public interface ITeamsRepository
+       {
+         Task<IEnumerable<Team>> GetAllAsync();
+         Task<Team?> GetByIdAsync(int id);
+         Task<Team> AddAsync(Team team);
+         Task UpdateAsync(Team team);
+         Task DeleteAsync(int id);
+         Task<bool> ExistsAsync(int id);
+       }
+     }
+
+    ```
 
 3.  **Create Commands and Queries**
 
@@ -175,145 +179,146 @@ The Application layer is where most of the implementation work happens. Follow t
         public record GetTeamsQuery : IRequest<List<TeamDto>>;
       }
 
+    ```
+
 4.  **Implement Command/Query Handlers**
 
     - Create handlers in the same folders as their commands/queries
 
-     ```csharp
-      namespace StudentEfCoreDemo.Application.Features.Teams.Commands
-      {
-        public class CreateTeamCommandHandler : IRequestHandler<CreateTeamCommand, TeamDto>
-        {
-          private readonly ITeamsRepository \_repository;
+    ```csharp
+     namespace StudentEfCoreDemo.Application.Features.Teams.Commands
+     {
+       public class CreateTeamCommandHandler : IRequestHandler<CreateTeamCommand, TeamDto>
+       {
+         private readonly ITeamsRepository _repository;
 
-          public CreateTeamCommandHandler(ITeamsRepository repository)
-          {
-          	_repository = repository;
-          }
+         public CreateTeamCommandHandler(ITeamsRepository repository)
+         {
+         	_repository = repository;
+         }
 
-          public async Task<TeamDto> Handle(CreateTeamCommand request, CancellationToken cancellationToken)
-          {
-          		var team = new Team
-          		{
-          			Name = request.Name,
-          			SportType = request.SportType,
-          			FoundedDate = request.FoundedDate,
-          			HomeStadium = request.HomeStadium,
-          			MaxRosterSize = request.MaxRosterSize
-          		};
+         public async Task<TeamDto> Handle(CreateTeamCommand request, CancellationToken cancellationToken)
+         {
+         	var team = new Team
+         	{
+         	  Name = request.Name,
+         		SportType = request.SportType,
+         		FoundedDate = request.FoundedDate,
+         		HomeStadium = request.HomeStadium,
+         		MaxRosterSize = request.MaxRosterSize
+         	};
 
-          		var createdTeam = await _repository.AddAsync(team);
-          		return new TeamDto
-          		{
-          			Id = createdTeam.Id,
-          			Name = createdTeam.Name,
-          			SportType = createdTeam.SportType,
-          			FoundedDate = createdTeam.FoundedDate,
-          			HomeStadium = createdTeam.HomeStadium,
-          			MaxRosterSize = createdTeam.MaxRosterSize
-          		};
-          	}
-          }
+         	var createdTeam = await _repository.AddAsync(team);
+         	return new TeamDto
+         	{
+         		Id = createdTeam.Id,
+         		Name = createdTeam.Name,
+         		SportType = createdTeam.SportType,
+         		FoundedDate = createdTeam.FoundedDate,
+         		HomeStadium = createdTeam.HomeStadium,
+         		MaxRosterSize = createdTeam.MaxRosterSize
+         	};
+         }
+       }
+     }
 
-      }
+     namespace StudentEfCoreDemo.Application.Features.Teams.Commands
+     {
+       public class DeleteTeamCommandHandler : IRequestHandler<DeleteTeamCommand>
+       {
+         private readonly ITeamsRepository _repository;
+         public DeleteTeamCommandHandler(ITeamsRepository repository)
+         {
+           _repository = repository;
+         }
 
-      namespace StudentEfCoreDemo.Application.Features.Teams.Commands
-      {
-        public class DeleteTeamCommandHandler : IRequestHandler<DeleteTeamCommand>
-        {
-          private readonly ITeamsRepository \_repository;
-          public DeleteTeamCommandHandler(ITeamsRepository repository)
-          {
-            _repository = repository;
-          }
+         public async Task Handle(DeleteTeamCommand request, CancellationToken cancellationToken)
+         {
+           await _repository.DeleteAsync(request.Id);
+         }
+       }
+     }
 
-          public async Task Handle(DeleteTeamCommand request, CancellationToken cancellationToken)
-              {
-                await _repository.DeleteAsync(request.Id);
-              }
-        }
+     namespace StudentEfCoreDemo.Application.Features.Teams.Commands
+     {
+       public class UpdateTeamCommandHandler : IRequestHandler<UpdateTeamCommand>
+       {
+         private readonly ITeamsRepository _repository;
+         public UpdateTeamCommandHandler(ITeamsRepository repository)
+         {
+           _repository = repository;
+         }
+         public async Task Handle(UpdateTeamCommand request, CancellationToken cancellationToken)
+         {
+           var team = new Team
+           {
+             Id = request.Id,
+             Name = request.Name,
+             SportType = request.SportType,
+             FoundedDate = request.FoundedDate,
+             HomeStadium = request.HomeStadium,
+             MaxRosterSize = request.MaxRosterSize,
+           };
+       	await _repository.UpdateAsync(team);
+       	}
+       }
+     }
 
-      }
+    namespace StudentEfCoreDemo.Application.Features.Teams.Queries
+    {
+     public class GetTeamByIdQueryHandler : IRequestHandler<GetTeamByIdQuery, TeamDto?>
+     {
+       private readonly ITeamsRepository _repository;
+       public GetTeamByIdQueryHandler(ITeamsRepository repository)
+       {
+         _repository = repository;
+       }
+       public async Task<TeamDto?> Handle(GetTeamByIdQuery request, CancellationToken cancellationToken)
+       {
+         var team = await _repository.GetByIdAsync(request.Id);
+         if (team == null)
+         {
+           return null;
+         }
 
-      namespace StudentEfCoreDemo.Application.Features.Teams.Commands
-      {
-        public class UpdateTeamCommandHandler : IRequestHandler<UpdateTeamCommand>
-        {
-          private readonly ITeamsRepository \_repository;
-          public UpdateTeamCommandHandler(ITeamsRepository repository)
-          {
-            _repository = repository;
-          }
-          public async Task Handle(UpdateTeamCommand request, CancellationToken cancellationToken)
-          {
-            var team = new Team
-            {
-              Id = request.Id,
-              Name = request.Name,
-              SportType = request.SportType,
-              FoundedDate = request.FoundedDate,
-              HomeStadium = request.HomeStadium,
-              MaxRosterSize = request.MaxRosterSize,
-            };
-        		await _repository.UpdateAsync(team);
-        	}
+       	return new TeamDto
+       		{
+       			Id = team.Id,
+       			Name = team.Name,
+       			SportType = team.SportType,
+       			FoundedDate = team.FoundedDate,
+       			HomeStadium = team.HomeStadium,
+       			MaxRosterSize = team.MaxRosterSize,
+       		};
+       	}
        }
     }
 
     namespace StudentEfCoreDemo.Application.Features.Teams.Queries
     {
-      public class GetTeamByIdQueryHandler : IRequestHandler<GetTeamByIdQuery, TeamDto?>
-      {
-        private readonly ITeamsRepository \_repository;
-        public GetTeamByIdQueryHandler(ITeamsRepository repository)
-        {
-          _repository = repository;
-        }
-        public async Task<TeamDto?> Handle(GetTeamByIdQuery request, CancellationToken cancellationToken)
-        {
-          var team = await \_repository.GetByIdAsync(request.Id);
-          if (team == null)
-          {
-            return null;
-          }
-
-        	return new TeamDto
-        		{
-        			Id = team.Id,
-        			Name = team.Name,
-        			SportType = team.SportType,
-        			FoundedDate = team.FoundedDate,
-        			HomeStadium = team.HomeStadium,
-        			MaxRosterSize = team.MaxRosterSize,
-        		};
-        	}
-        }
+     public class GetTeamsQueryHandler : IRequestHandler<GetTeamsQuery, List<TeamDto>>
+     {
+       private readonly ITeamsRepository _repository;
+       public GetTeamsQueryHandler(ITeamsRepository repository)
+       {
+         _repository = repository;
+       }
+       public async Task<List<TeamDto>> Handle(GetTeamsQuery request, CancellationToken cancellationToken)
+       {
+         var teams = await _repository.GetAllAsync();
+         return teams.Select(s => new TeamDto
+         {
+           Id = s.Id,
+           Name = s.Name,
+           SportType = s.SportType,
+           FoundedDate = s.FoundedDate,
+           HomeStadium = s.HomeStadium,
+           MaxRosterSize = s.MaxRosterSize,
+         }).ToList();
+       }
+     }
     }
-
-      namespace StudentEfCoreDemo.Application.Features.Teams.Queries
-      {
-        public class GetTeamsQueryHandler : IRequestHandler<GetTeamsQuery, List<TeamDto>>
-        {
-          private readonly ITeamsRepository \_repository;
-          public GetTeamsQueryHandler(ITeamsRepository repository)
-          {
-          \_repository = repository;
-          }
-          public async Task<List<TeamDto>> Handle(GetTeamsQuery request, CancellationToken cancellationToken)
-          {
-          var teams = await \_repository.GetAllAsync();
-          return teams.Select(s => new TeamDto
-          {
-            Id = s.Id,
-            Name = s.Name,
-            SportType = s.SportType,
-            FoundedDate = s.FoundedDate,
-            HomeStadium = s.HomeStadium,
-            MaxRosterSize = s.MaxRosterSize,
-          }).ToList();
-          }
-        }   
-    }
+    ```
 
 ### 3. Infrastructure Layer (StudentEfCoreDemo.Infrastructure)
 
@@ -323,73 +328,76 @@ Implement the data access and external service integrations:
 
     - Add your entity to `Infrastructure/Data/StudentContext.cs`
 
-     ```csharp
-      namespace StudentEfCoreDemo.Infrastructure.Data
-      {
-        public class StudentContext : DbContext
-        {
-          public StudentContext(DbContextOptions<StudentContext> options) : base(options) { }
+    ```csharp
+     namespace StudentEfCoreDemo.Infrastructure.Data
+     {
+       public class StudentContext : DbContext
+       {
+         public StudentContext(DbContextOptions<StudentContext> options) : base(options) { }
 
-          public DbSet<Student> Students { get; set; } = null!;
-          public DbSet<Team> Teams { get; set; } = null!;
-          }
-      }
+         public DbSet<Student> Students { get; set; } = null!;
+         public DbSet<Team> Teams { get; set; } = null!;
+         }
+     }
+
+    ```
 
 2.  **Implement Repository**
 
     - Create repository implementation in `Infrastructure/Repositories/`
 
-       ```csharp
+      ```csharp
       namespace StudentEfCoreDemo.Infrastructure.Repositories
       {
-        public class TeamRepository : ITeamsRepository
-        {
-          private readonly StudentContext \_context;
+       public class TeamRepository : ITeamsRepository
+       {
+         private readonly StudentContext _context;
 
-          public TeamRepository(StudentContext context)
-          {
-          	_context = context;
-          }
+         public TeamRepository(StudentContext context)
+         {
+         	_context = context;
+         }
 
-          public async Task<IEnumerable<Team>> GetAllAsync()
-          {
-          	return await _context.Teams.ToListAsync();
-          }
+         public async Task<IEnumerable<Team>> GetAllAsync()
+         {
+         	return await _context.Teams.ToListAsync();
+         }
 
-          public async Task<Team?> GetByIdAsync(int id)
-          {
-          	return await _context.Teams.FindAsync(id);
-          }
+         public async Task<Team?> GetByIdAsync(int id)
+         {
+         	return await _context.Teams.FindAsync(id);
+         }
 
-          public async Task<Team> AddAsync(Team team)
-          {
-          	_context.Teams.Add(team);
-          	await _context.SaveChangesAsync();
-          	return team;
-          }
+         public async Task<Team> AddAsync(Team team)
+         {
+         	_context.Teams.Add(team);
+         	await _context.SaveChangesAsync();
+         	return team;
+         }
 
-          public async Task UpdateAsync(Team team)
-          {
-          	_context.Entry(team).State = EntityState.Modified;
-          	await _context.SaveChangesAsync();
-          }
+         public async Task UpdateAsync(Team team)
+         {
+         	_context.Entry(team).State = EntityState.Modified;
+         	await _context.SaveChangesAsync();
+         }
 
-          public async Task DeleteAsync(int id)
-          {
-          	var team = await _context.Teams.FindAsync(id);
-          	if (team != null)
-          	{
-          		_context.Teams.Remove(team);
-          		await _context.SaveChangesAsync();
-          	}
-          }
+         public async Task DeleteAsync(int id)
+         {
+         	var team = await _context.Teams.FindAsync(id);
+         	if (team != null)
+         	{
+         		_context.Teams.Remove(team);
+         		await _context.SaveChangesAsync();
+         	}
+         }
 
-          public async Task<bool> ExistsAsync(int id)
-          {
-          	return await _context.Teams.AnyAsync(e => e.Id == id);
-          }
-        }
+         public async Task<bool> ExistsAsync(int id)
+         {
+         	return await _context.Teams.AnyAsync(e => e.Id == id);
+         }
+       }
       }
+      ```
 
 ### 4. API Layer (StudentEfCoreDemo.API)
 
@@ -398,13 +406,15 @@ Create the API endpoints:
 1.  **Create Controller**
 
     - Create a new controller in `API/Controllers/`
-      namespace StudentEfCoreDemo.API.Controllers
+
+    ```csharp
+    namespace StudentEfCoreDemo.API.Controllers
       {
       [ApiController]
       [Route("api/[controller]")]
       public class TeamsController : ControllerBase
       {
-      private readonly IMediator \_mediator;
+      private readonly IMediator _mediator;
 
           	public TeamsController(IMediator mediator)
           	{
@@ -461,9 +471,13 @@ Create the API endpoints:
 
       }
 
+    ```
+
 2.  **Register Dependencies**
 
     - Add repository registration in `Program.cs`
+
+    ```csharp
       var builder = WebApplication.CreateBuilder(args);
 
     // Add services to the container.
@@ -496,6 +510,7 @@ Create the API endpoints:
     app.MapControllers();
 
     app.Run();
+    ```
 
 ### 5. Database Migration
 
@@ -508,7 +523,9 @@ After implementing the feature, create and apply the database migration:
    ```powershell
    Add-Migration AddYourEntity
    Update-Database
-   ``
+   ```
+
+   ```csharp
    namespace StudentEfCoreDemo.Infrastructure.Migrations
    {
    	/// <inheritdoc />
