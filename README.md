@@ -188,19 +188,19 @@ The Application layer is where most of the implementation work happens. Follow t
     - Create handlers in the same folders as their commands/queries
 
     ```csharp
-     namespace StudentEfCoreDemo.Application.Features.Teams.Commands
-     {
-       public class CreateTeamCommandHandler : IRequestHandler<CreateTeamCommand, TeamDto>
-       {
-         private readonly ITeamsRepository _repository;
+    namespace StudentEfCoreDemo.Application.Features.Teams.Commands
+    {
+      public class CreateTeamCommandHandler : IRequestHandler<CreateTeamCommand, TeamDto>
+      {
+        private readonly ITeamsRepository _repository;
 
-         public CreateTeamCommandHandler(ITeamsRepository repository)
-         {
+        public CreateTeamCommandHandler(ITeamsRepository repository)
+        {
          	_repository = repository;
-         }
+        }
 
-         public async Task<TeamDto> Handle(CreateTeamCommand request, CancellationToken cancellationToken)
-         {
+        public async Task<TeamDto> Handle(CreateTeamCommand request, CancellationToken cancellationToken)
+        {
          	var team = new Team
          	{
          	  Name = request.Name,
@@ -220,81 +220,81 @@ The Application layer is where most of the implementation work happens. Follow t
          		HomeStadium = createdTeam.HomeStadium,
          		MaxRosterSize = createdTeam.MaxRosterSize
          	};
-         }
-       }
-     }
-
-     namespace StudentEfCoreDemo.Application.Features.Teams.Commands
-     {
-       public class DeleteTeamCommandHandler : IRequestHandler<DeleteTeamCommand>
-       {
-         private readonly ITeamsRepository _repository;
-         public DeleteTeamCommandHandler(ITeamsRepository repository)
-         {
-           _repository = repository;
-         }
-
-         public async Task Handle(DeleteTeamCommand request, CancellationToken cancellationToken)
-         {
-           await _repository.DeleteAsync(request.Id);
-         }
-       }
-     }
-
-     namespace StudentEfCoreDemo.Application.Features.Teams.Commands
-     {
-       public class UpdateTeamCommandHandler : IRequestHandler<UpdateTeamCommand>
-       {
-         private readonly ITeamsRepository _repository;
-         public UpdateTeamCommandHandler(ITeamsRepository repository)
-         {
-           _repository = repository;
-         }
-         public async Task Handle(UpdateTeamCommand request, CancellationToken cancellationToken)
-         {
-           var team = new Team
-           {
-             Id = request.Id,
-             Name = request.Name,
-             SportType = request.SportType,
-             FoundedDate = request.FoundedDate,
-             HomeStadium = request.HomeStadium,
-             MaxRosterSize = request.MaxRosterSize,
-           };
-       	await _repository.UpdateAsync(team);
-       	}
-       }
-     }
-
-    namespace StudentEfCoreDemo.Application.Features.Teams.Queries
-    {
-     public class GetTeamByIdQueryHandler : IRequestHandler<GetTeamByIdQuery, TeamDto?>
-     {
-       private readonly ITeamsRepository _repository;
-       public GetTeamByIdQueryHandler(ITeamsRepository repository)
-       {
-         _repository = repository;
-       }
-       public async Task<TeamDto?> Handle(GetTeamByIdQuery request, CancellationToken cancellationToken)
-       {
-         var team = await _repository.GetByIdAsync(request.Id);
-         if (team == null)
-         {
-           return null;
-         }
-
-       	return new TeamDto
-       		{
-       			Id = team.Id,
-       			Name = team.Name,
-       			SportType = team.SportType,
-       			FoundedDate = team.FoundedDate,
-       			HomeStadium = team.HomeStadium,
-       			MaxRosterSize = team.MaxRosterSize,
-       		};
-       	}
-       }
+        }
+      }
     }
+
+    namespace StudentEfCoreDemo.Application.Features.Teams.Commands
+    {
+      public class DeleteTeamCommandHandler : IRequestHandler<DeleteTeamCommand>
+      {
+        private readonly ITeamsRepository _repository;
+        public DeleteTeamCommandHandler(ITeamsRepository repository)
+        {
+          _repository = repository;
+        }
+
+        public async Task Handle(DeleteTeamCommand request, CancellationToken cancellationToken)
+        {
+          await _repository.DeleteAsync(request.Id);
+        }
+      }
+    }
+
+    namespace StudentEfCoreDemo.Application.Features.Teams.Commands
+    {
+      public class UpdateTeamCommandHandler : IRequestHandler<UpdateTeamCommand>
+      {
+        private readonly ITeamsRepository _repository;
+        public UpdateTeamCommandHandler(ITeamsRepository repository)
+        {
+          _repository = repository;
+        }
+        public async Task Handle(UpdateTeamCommand request, CancellationToken cancellationToken)
+        {
+        var team = new Team
+          {
+            Id = request.Id,
+            Name = request.Name,
+            SportType = request.SportType,
+            FoundedDate = request.FoundedDate,
+            HomeStadium = request.HomeStadium,
+            MaxRosterSize = request.MaxRosterSize,
+          };
+       	  await _repository.UpdateAsync(team);
+       	}
+      }
+    }
+
+   namespace StudentEfCoreDemo.Application.Features.Teams.Queries
+   {
+    public class GetTeamByIdQueryHandler : IRequestHandler<GetTeamByIdQuery, TeamDto?>
+    {
+      private readonly ITeamsRepository _repository;
+      public GetTeamByIdQueryHandler(ITeamsRepository repository)
+      {
+        _repository = repository;
+      }
+      public async Task<TeamDto?> Handle(GetTeamByIdQuery request, CancellationToken cancellationToken)
+      {
+        var team = await _repository.GetByIdAsync(request.Id);
+        if (team == null)
+        {
+          return null;
+        }
+
+      	return new TeamDto
+     		{
+     			Id = team.Id,
+     			Name = team.Name,
+     			SportType = team.SportType,
+     			FoundedDate = team.FoundedDate,
+     			HomeStadium = team.HomeStadium,
+     			MaxRosterSize = team.MaxRosterSize,
+     		};
+     	}
+    }
+   }
 
     namespace StudentEfCoreDemo.Application.Features.Teams.Queries
     {
