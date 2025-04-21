@@ -335,11 +335,11 @@ Implement the data access and external service integrations:
      {
        public class StudentContext : DbContext
        {
-         public StudentContext(DbContextOptions<StudentContext> options) : base(options) { }
+        public StudentContext(DbContextOptions<StudentContext> options) : base(options) { }
 
-         public DbSet<Student> Students { get; set; } = null!;
-         public DbSet<Team> Teams { get; set; } = null!;
-         }
+        public DbSet<Student> Students { get; set; } = null!;
+        public DbSet<Team> Teams { get; set; } = null!;
+       }
      }
 
     ```
@@ -411,67 +411,65 @@ Create the API endpoints:
 
     ```csharp
     namespace StudentEfCoreDemo.API.Controllers
-      {
+    {
       [ApiController]
       [Route("api/[controller]")]
       public class TeamsController : ControllerBase
       {
-      private readonly IMediator _mediator;
+        private readonly IMediator _mediator;
 
-          	public TeamsController(IMediator mediator)
-          	{
-          		_mediator = mediator;
-          	}
+        public TeamsController(IMediator mediator)
+        {
+        	_mediator = mediator;
+        }
 
-          	[HttpGet]
-          	public async Task<ActionResult<IEnumerable<TeamDto>>> GetTeams()
-          	{
-          		var query = new GetTeamsQuery();
-          		var result = await _mediator.Send(query);
-          		return Ok(result);
-          	}
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TeamDto>>> GetTeams()
+        {
+        	var query = new GetTeamsQuery();
+        	var result = await _mediator.Send(query);
+        	return Ok(result);
+        }
 
-          	[HttpGet("{id}")]
-          	public async Task<ActionResult<TeamDto>> GetTeam(int id)
-          	{
-          		var query = new GetTeamByIdQuery(id);
-          		var result = await _mediator.Send(query);
-          		if (result == null)
-          		{
-          			return NotFound();
-          		}
-          		return Ok(result);
-          	}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TeamDto>> GetTeam(int id)
+        {
+        	var query = new GetTeamByIdQuery(id);
+        	var result = await _mediator.Send(query);
+        	if (result == null)
+        	{
+        		return NotFound();
+        	}
+        	return Ok(result);
+        }
 
-          	[HttpPost]
-          	public async Task<ActionResult<TeamDto>> CreateTeam(CreateTeamCommand command)
-          	{
-          		var result = await _mediator.Send(command);
-          		return CreatedAtAction(nameof(GetTeam), new { id = result.Id }, result);
-          	}
+        [HttpPost]
+        public async Task<ActionResult<TeamDto>> CreateTeam(CreateTeamCommand command)
+        {
+        	var result = await _mediator.Send(command);
+        	return CreatedAtAction(nameof(GetTeam), new { id = result.Id }, result);
+        }
 
-          	[HttpPut("{id}")]
-          	public async Task<IActionResult> UpdateTeam(int id, UpdateTeamCommand command)
-          	{
-          		if (id != command.Id)
-          		{
-          			return BadRequest();
-          		}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTeam(int id, UpdateTeamCommand command)
+        {
+        	if (id != command.Id)
+        	{
+        		return BadRequest();
+        	}
+          await _mediator.Send(command);
+          return NoContent();
+        }
 
-          		await _mediator.Send(command);
-          		return NoContent();
-          	}
-
-          	[HttpDelete("{id}")]
-          	public async Task<IActionResult> DeleteTeam(int id)
-          	{
-          		var command = new DeleteTeamCommand(id);
-          		await _mediator.Send(command);
-          		return NoContent();
-          	}
-          }
-
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTeam(int id)
+        {
+        	var command = new DeleteTeamCommand(id);
+        	await _mediator.Send(command);
+        	return NoContent();
+        }
       }
+    }
 
     ```
 
@@ -480,39 +478,39 @@ Create the API endpoints:
     - Add repository registration in `Program.cs`
 
     ```csharp
-      var builder = WebApplication.CreateBuilder(args);
+  var builder = WebApplication.CreateBuilder(args);
 
-    // Add services to the container.
-    builder.Services.AddControllers();
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+  // Add services to the container.
+  builder.Services.AddControllers();
+  builder.Services.AddEndpointsApiExplorer();
+  builder.Services.AddSwaggerGen();
 
-    // Add MediatR
-    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(StudentEfCoreDemo.Application.AssemblyReference).Assembly));
+  // Add MediatR
+  builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(StudentEfCoreDemo.Application.AssemblyReference).Assembly));
 
-    // Add DbContext
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    builder.Services.AddDbContext<StudentContext>(options => options.UseSqlServer(connectionString));
+  // Add DbContext
+  var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+  builder.Services.AddDbContext<StudentContext>(options => options.UseSqlServer(connectionString));
 
-    // Add Repositories
-    builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-    builder.Services.AddScoped<ITeamsRepository, TeamRepository>();
+  // Add Repositories
+  builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+  builder.Services.AddScoped<ITeamsRepository, TeamRepository>();
 
-    var app = builder.Build();
+  var app = builder.Build();
 
-    // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
-    {
+  // Configure the HTTP request pipeline.
+  if (app.Environment.IsDevelopment())
+  {
     app.UseSwagger();
     app.UseSwaggerUI();
-    }
+  }
 
-    app.UseHttpsRedirection();
-    app.UseAuthorization();
-    app.MapControllers();
+  app.UseHttpsRedirection();
+  app.UseAuthorization();
+  app.MapControllers();
 
-    app.Run();
-    ```
+  app.Run();
+  ```
 
 ### 5. Database Migration
 
@@ -527,9 +525,9 @@ After implementing the feature, create and apply the database migration:
    Update-Database
    ```
 
-   ```csharp
-   namespace StudentEfCoreDemo.Infrastructure.Migrations
-   {
+  ```csharp
+  namespace StudentEfCoreDemo.Infrastructure.Migrations
+  {
    	/// <inheritdoc />
    	public partial class AddTeamEntity : Migration
    	{
@@ -561,8 +559,8 @@ After implementing the feature, create and apply the database migration:
    				name: "Teams");
    		}
    	}
-   }`
-   ```
+  }
+  ```
 
 ## Best Practices
 
