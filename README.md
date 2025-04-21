@@ -475,41 +475,41 @@ Create the API endpoints:
 
 2.  **Register Dependencies**
 
-    - Add repository registration in `Program.cs`
+  - Add repository registration in `Program.cs`
 
-    ```csharp
-  var builder = WebApplication.CreateBuilder(args);
+  ```csharp
+    var builder = WebApplication.CreateBuilder(args);
 
-  // Add services to the container.
-  builder.Services.AddControllers();
-  builder.Services.AddEndpointsApiExplorer();
-  builder.Services.AddSwaggerGen();
+    // Add services to the container.
+    builder.Services.AddControllers();
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
 
-  // Add MediatR
-  builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(StudentEfCoreDemo.Application.AssemblyReference).Assembly));
+    // Add MediatR
+    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(StudentEfCoreDemo.Application.AssemblyReference).Assembly));
 
-  // Add DbContext
-  var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-  builder.Services.AddDbContext<StudentContext>(options => options.UseSqlServer(connectionString));
+    // Add DbContext
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    builder.Services.AddDbContext<StudentContext>(options => options.UseSqlServer(connectionString));
 
-  // Add Repositories
-  builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-  builder.Services.AddScoped<ITeamsRepository, TeamRepository>();
+    // Add Repositories
+    builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+    builder.Services.AddScoped<ITeamsRepository, TeamRepository>();
 
-  var app = builder.Build();
+    var app = builder.Build();
 
-  // Configure the HTTP request pipeline.
-  if (app.Environment.IsDevelopment())
-  {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-  }
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+      app.UseSwagger();
+      app.UseSwaggerUI();
+    }
 
-  app.UseHttpsRedirection();
-  app.UseAuthorization();
-  app.MapControllers();
+    app.UseHttpsRedirection();
+    app.UseAuthorization();
+    app.MapControllers();
 
-  app.Run();
+    app.Run();
   ```
 
 ### 5. Database Migration
