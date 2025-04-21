@@ -268,8 +268,8 @@ The Application layer is where most of the implementation work happens. Follow t
   
    namespace StudentEfCoreDemo.Application.Features.Teams.Queries
    {
-      public class GetTeamByIdQueryHandler : IRequestHandler<GetTeamByIdQuery, TeamDto?>
-      {
+     public class GetTeamByIdQueryHandler : IRequestHandler<GetTeamByIdQuery, TeamDto?>
+     {
         private readonly ITeamsRepository _repository;
         public GetTeamByIdQueryHandler(ITeamsRepository repository)
         {
@@ -320,7 +320,7 @@ The Application layer is where most of the implementation work happens. Follow t
        }
      }
   }
-  
+  ```  
 
 ### 3. Infrastructure Layer (StudentEfCoreDemo.Infrastructure)
 
@@ -328,47 +328,47 @@ Implement the data access and external service integrations:
 
 1.  **Update DbContext**
 
-    - Add your entity to `Infrastructure/Data/StudentContext.cs`
+  - Add your entity to `Infrastructure/Data/StudentContext.cs`
 
-    ```csharp
-     namespace StudentEfCoreDemo.Infrastructure.Data
-     {
-       public class StudentContext : DbContext
-       {
-        public StudentContext(DbContextOptions<StudentContext> options) : base(options) { }
+  ```csharp
+  namespace StudentEfCoreDemo.Infrastructure.Data
+  {
+    public class StudentContext : DbContext
+    {
+      public StudentContext(DbContextOptions<StudentContext> options) : base(options) { }
 
-        public DbSet<Student> Students { get; set; } = null!;
-        public DbSet<Team> Teams { get; set; } = null!;
-       }
-     }
+      public DbSet<Student> Students { get; set; } = null!;
+      public DbSet<Team> Teams { get; set; } = null!;
+    }
+  }
 
-    ```
+  ```
 
 2.  **Implement Repository**
 
-    - Create repository implementation in `Infrastructure/Repositories/`
+  - Create repository implementation in `Infrastructure/Repositories/`
 
-      ```csharp
-      namespace StudentEfCoreDemo.Infrastructure.Repositories
-      {
-       public class TeamRepository : ITeamsRepository
-       {
-         private readonly StudentContext _context;
+  ```csharp
+  namespace StudentEfCoreDemo.Infrastructure.Repositories
+  {
+    public class TeamRepository : ITeamsRepository
+    {
+      private readonly StudentContext _context;
 
-         public TeamRepository(StudentContext context)
-         {
-         	_context = context;
-         }
+      public TeamRepository(StudentContext context)
+     {
+       	_context = context;
+      }
 
-         public async Task<IEnumerable<Team>> GetAllAsync()
-         {
-         	return await _context.Teams.ToListAsync();
-         }
+      public async Task<IEnumerable<Team>> GetAllAsync()
+     {
+       	return await _context.Teams.ToListAsync();
+      }
 
-         public async Task<Team?> GetByIdAsync(int id)
-         {
-         	return await _context.Teams.FindAsync(id);
-         }
+      public async Task<Team?> GetByIdAsync(int id)
+     {
+       	return await _context.Teams.FindAsync(id);
+      }
 
          public async Task<Team> AddAsync(Team team)
          {
