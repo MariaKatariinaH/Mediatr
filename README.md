@@ -253,14 +253,14 @@ The Application layer is where most of the implementation work happens. Follow t
         public async Task Handle(UpdateTeamCommand request, CancellationToken cancellationToken)
         {
           var team = new Team
-          {
-            Id = request.Id,
-            Name = request.Name,
-            SportType = request.SportType,
-            FoundedDate = request.FoundedDate,
-            HomeStadium = request.HomeStadium,
-            MaxRosterSize = request.MaxRosterSize,
-          };
+            {
+              Id = request.Id,
+              Name = request.Name,
+              SportType = request.SportType,
+              FoundedDate = request.FoundedDate,
+              HomeStadium = request.HomeStadium,
+              MaxRosterSize = request.MaxRosterSize,
+            };
        	  await _repository.UpdateAsync(team);
        	}
       }
