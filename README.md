@@ -252,7 +252,7 @@ The Application layer is where most of the implementation work happens. Follow t
         }
         public async Task Handle(UpdateTeamCommand request, CancellationToken cancellationToken)
         {
-        var team = new Team
+          var team = new Team
           {
             Id = request.Id,
             Name = request.Name,
