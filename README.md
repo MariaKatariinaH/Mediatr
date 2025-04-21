@@ -185,9 +185,9 @@ The Application layer is where most of the implementation work happens. Follow t
 
 4.  **Implement Command/Query Handlers**
 
-    - Create handlers in the same folders as their commands/queries
+  - Create handlers in the same folders as their commands/queries
 
-    ```csharp
+  ```csharp
     namespace StudentEfCoreDemo.Application.Features.Teams.Commands
     {
       public class CreateTeamCommandHandler : IRequestHandler<CreateTeamCommand, TeamDto>
@@ -241,17 +241,17 @@ The Application layer is where most of the implementation work happens. Follow t
       }
     }
 
-   namespace StudentEfCoreDemo.Application.Features.Teams.Commands
-   {
-     public class UpdateTeamCommandHandler : IRequestHandler<UpdateTeamCommand>
-     {
+    namespace StudentEfCoreDemo.Application.Features.Teams.Commands
+    {
+      public class UpdateTeamCommandHandler : IRequestHandler<UpdateTeamCommand>
+      {
         private readonly ITeamsRepository _repository;
         public UpdateTeamCommandHandler(ITeamsRepository repository)
         {
           _repository = repository;
         }
         public async Task Handle(UpdateTeamCommand request, CancellationToken cancellationToken)
-       {
+        {
           var team = new Team
             {
               Id = request.Id,
@@ -265,36 +265,36 @@ The Application layer is where most of the implementation work happens. Follow t
        	}
       }
     }
-  ```csharp
-  namespace StudentEfCoreDemo.Application.Features.Teams.Queries
-  {
-    public class GetTeamByIdQueryHandler : IRequestHandler<GetTeamByIdQuery, TeamDto?>
-    {
-      private readonly ITeamsRepository _repository;
-      public GetTeamByIdQueryHandler(ITeamsRepository repository)
+  
+   namespace StudentEfCoreDemo.Application.Features.Teams.Queries
+   {
+      public class GetTeamByIdQueryHandler : IRequestHandler<GetTeamByIdQuery, TeamDto?>
       {
-        _repository = repository;
-      }
-      public async Task<TeamDto?> Handle(GetTeamByIdQuery request, CancellationToken cancellationToken)
-      {
-        var team = await _repository.GetByIdAsync(request.Id);
-        if (team == null)
+        private readonly ITeamsRepository _repository;
+        public GetTeamByIdQueryHandler(ITeamsRepository repository)
         {
-          return null;
+          _repository = repository;
         }
+        public async Task<TeamDto?> Handle(GetTeamByIdQuery request, CancellationToken cancellationToken)
+        {
+          var team = await _repository.GetByIdAsync(request.Id);
+          if (team == null)
+          {
+            return null;
+          }
 
-      	return new TeamDto
-     		{
-     			Id = team.Id,
-     			Name = team.Name,
-     			SportType = team.SportType,
-     			FoundedDate = team.FoundedDate,
-     			HomeStadium = team.HomeStadium,
-     			MaxRosterSize = team.MaxRosterSize,
-     		};
-     	}
+      	  return new TeamDto
+     		  {
+     			  Id = team.Id,
+     			  Name = team.Name,
+     			  SportType = team.SportType,
+     			  FoundedDate = team.FoundedDate,
+     			  HomeStadium = team.HomeStadium,
+     			  MaxRosterSize = team.MaxRosterSize,
+     		  };
+     	  }
+      }
     }
-  }
 
   namespace StudentEfCoreDemo.Application.Features.Teams.Queries
   {
@@ -320,7 +320,7 @@ The Application layer is where most of the implementation work happens. Follow t
        }
      }
   }
-  ```
+    ```
 
 ### 3. Infrastructure Layer (StudentEfCoreDemo.Infrastructure)
 
