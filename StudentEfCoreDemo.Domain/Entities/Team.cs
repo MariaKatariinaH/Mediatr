@@ -4,11 +4,10 @@ namespace StudentEfCoreDemo.Domain.Entities
 {
     public class Team
     {
-       
-        private string _name;
-        private string _sportType;
+        private string _name = string.Empty;
+        private string _sportType = string.Empty;
         private DateTime _foundedDate;
-        private string _homeStadium;
+        private string _homeStadium = string.Empty;
         private int _maxRosterSize;
 
         public int Id { get; set; }
@@ -23,7 +22,6 @@ namespace StudentEfCoreDemo.Domain.Entities
                 _name = value;
             }
         }
-
         public string SportType
         {
             get => _sportType;
@@ -34,7 +32,6 @@ namespace StudentEfCoreDemo.Domain.Entities
                 _sportType = value;
             }
         }
-
         public DateTime FoundedDate 
         { get => _foundedDate;
             set
@@ -44,7 +41,6 @@ namespace StudentEfCoreDemo.Domain.Entities
                 _foundedDate = value;
             }
         }
-
         public string HomeStadium
         {
             get => _homeStadium;

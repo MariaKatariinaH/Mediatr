@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StudentEfCoreDemo.Application\StudentEfCoreDemo.Application.csproj" />
-    <ProjectReference Include="..\StudentEfCoreDemo.Domain\StudentEfCoreDemo.Domain.csproj" />
     <ProjectReference Include="..\StudentEfCoreDemo.Infrastructure\StudentEfCoreDemo.Infrastructure.csproj" />
   </ItemGroup>
 
