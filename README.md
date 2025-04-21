@@ -96,33 +96,37 @@ The Application layer is where most of the implementation work happens. Follow t
 1.  **Create DTOs**
 
     - Create a new DTO class in `Application/DTOs/`
+
+     ```csharp
       namespace StudentEfCoreDemo.Application.DTOs
       {
-      public class TeamDto
-      {
-      public int Id { get; set; }
-      public string Name { get; set; } = string.Empty;
-      public string SportType { get; set; } = string.Empty;
-      public DateTime FoundedDate { get; set; }
-      public string HomeStadium { get; set; } = string.Empty;
-      public int MaxRosterSize { get; set; }
-      }
+        public class TeamDto
+        {
+          public int Id { get; set; }
+          public string Name { get; set; } = string.Empty;
+          public string SportType { get; set; } = string.Empty;
+          public DateTime FoundedDate { get; set; }
+          public string HomeStadium { get; set; } = string.Empty;
+          public int MaxRosterSize { get; set; }
+        }
       }
 
 2.  **Define Repository Interface**
 
     - Create a new interface in `Application/Interfaces/`
+
+     ```csharp
       namespace StudentEfCoreDemo.Application.Interfaces
       {
-      public interface ITeamsRepository
-      {
-      Task<IEnumerable<Team>> GetAllAsync();
-      Task<Team?> GetByIdAsync(int id);
-      Task<Team> AddAsync(Team team);
-      Task UpdateAsync(Team team);
-      Task DeleteAsync(int id);
-      Task<bool> ExistsAsync(int id);
-      }
+        public interface ITeamsRepository
+        {
+          Task<IEnumerable<Team>> GetAllAsync();
+          Task<Team?> GetByIdAsync(int id);
+          Task<Team> AddAsync(Team team);
+          Task UpdateAsync(Team team);
+          Task DeleteAsync(int id);
+          Task<bool> ExistsAsync(int id);
+        }
       }
 
 3.  **Create Commands and Queries**
