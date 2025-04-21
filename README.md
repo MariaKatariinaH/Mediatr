@@ -167,8 +167,10 @@ The Application layer is where most of the implementation work happens. Follow t
           public int MaxRosterSize { get; init; }
         }
       }
+    ```
+    - Create query classes in `Application/Features/YourFeature/Queries/
 
-    - Create query classes in `Application/Features/YourFeature/Queries/`
+    ```csharp
       namespace StudentEfCoreDemo.Application.Features.Teams.Queries
       {
         public record GetTeamByIdQuery(int Id) : IRequest<TeamDto?>;
